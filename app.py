@@ -40,6 +40,24 @@ def signup():
 
         return redirect(url_for('login'))
 
+@app.route('/login', methods=['POST','GET'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        cur = mysql.connection.cursor()
+        cur.execute('select * from users where email = %s', [email])
+        user=cur.fetchone()
+        cur.close()
+
+        if user and check_password_hash(user[4], password):
+            session['user_id'] = user[0]
+            return redirect(url_for('dashboard'))
+        
+        flash('login failed, please recheck credentials')
+
+    return render_template('login.html')
 
 if __name__ == ('__main__'):
     app.run(debug=True)
