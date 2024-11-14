@@ -39,6 +39,8 @@ def signup():
         flash('signup success')
 
         return redirect(url_for('login'))
+    
+    return render_template('signup.html')
 
 @app.route('/login', methods=['POST','GET'])
 def login():
@@ -58,6 +60,8 @@ def login():
         flash('login failed, please recheck credentials')
 
     return render_template('login.html')
+
+
 
 if __name__ == ('__main__'):
     app.run(debug=True)
